@@ -33,10 +33,11 @@ int main() {
 	alt_u8 counter = 0x0;
 	
 	// Original: rand var alt_u32 0x0
-	//
+	// Has to be 32 to work with all 18 bits of red LEDs
 	alt_u32 random = 0x0;
 	
 	// num of rand patterns int
+  // not gonnal lie not really sure what this is yet
 	int patterns = 3;
 	
 	// Loop never exits
@@ -54,21 +55,16 @@ int main() {
 			// How to light pattern_BASE LEDs
 			IOWR_ALTERA_AVALON_PIO_DATA(pattern_BASE, 0xFF);
 			IOWR_ALTERA_AVALON_PIO_DATA(counter_BASE, 0xFF);
-		}
-
-		// read mode data from board
-		 mode = IORD_ALTERA_AVALON_PIO_DATA(SYSTEM_MODES_BASE);
+		}  // Ending bracket of mode 1 if 
 		
 		//********** MODE 2 **********
-    // output to string to board for checking purposes
-		alt_putstr("Counter Lights on MODE 2\n");
     
 		if(mode == 0x2){	
-			// set all lights to off
+      // output to string to board for checking purposes
+		  alt_putstr("Counter Lights on MODE 2\n");
+      
+			// set all green lights to off
 			IOWR_ALTERA_AVALON_PIO_DATA(counter_BASE, 0x00);
-
-      // counter for deciding the LED to turn on
-      alt_u8 counter = 0x00;
 
       // Loop through the lights
       for(int i = 0; i < 256; i++) {
@@ -84,8 +80,36 @@ int main() {
 
         // Sleep function so that it counts slow enough for us to see it
         usleep(100000);
-      }
-		}
-	}
-}
+      }  // Ending bracket for counter  
+		}  // Ending bracket for if mode 2
+    
+		//********** MODE 3 **********
+    
+		if(mode == 0x3){	
+      // output to string to board for checking purposes
+		  alt_putstr("Random Lights on MODE 3\n");
+      
+			// set all red lights to off
+			IOWR_ALTERA_AVALON_PIO_DATA(random_BASE, 0x0);
+       
+      // Loop through the lights
+      while(1) {
+        // Check mode while looping...
+      	modes = IORD_ALTERA_AVALON_PIO_DATA(SYSTEM_MODES_BASE);
+        
+        // break if mode changes
+        if (modes != 0x3) break;
+
+        // get rand value to assign to altera out
+        random = rand() % 262144;
+
+        // Sent rand val to altera
+        IOWR_ALTERA_AVALON_PIO_DATA(random_BASE, random);
+
+        // Sleep so we can actually see the changes
+        usleep(10000);
+      }  // Ending bracket while mode 3
+    }  // Ending bracket if mode 3
+	}  // Ending bracket large while loop
+}  // Ending bracket main
 
