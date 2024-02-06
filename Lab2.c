@@ -17,11 +17,11 @@
 #include <stdlib.h>
 
 // System Modes Base: 0x21020
-alt_u32 SYSTEM_MODES_BASE = 0x21020;
+alt_u32 MODES_BASE = 0x21020;
 // System Counters Base: 0x21000
 alt_u32 counter_BASE = 0x21000;
 // Random Pattern Base: 0x21010
-alt_u32 pattern_BASE = 0x21000;
+alt_u32 pattern_BASE = 0x21010;
 
 int main() {
 	alt_putstr("Project2 - CSCE 313\n");
@@ -44,7 +44,7 @@ int main() {
 	while(1) {
 	
 		// read mode data from board
-		mode = IORD_ALTERA_AVALON_PIO_DATA(SYSTEM_MODES_BASE);
+		mode = IORD_ALTERA_AVALON_PIO_DATA(MODES_BASE);
 	
 		//********** MODE 1 **********
 		// check if the mode is 1
@@ -53,7 +53,7 @@ int main() {
 			alt_putstr("LEDs light on MODE 1\n");
 			
 			// How to light pattern_BASE LEDs
-			IOWR_ALTERA_AVALON_PIO_DATA(pattern_BASE, 0xFF);
+			IOWR_ALTERA_AVALON_PIO_DATA(pattern_BASE, 0xFFFFFF);
 			IOWR_ALTERA_AVALON_PIO_DATA(counter_BASE, 0xFF);
 		}  // Ending bracket of mode 1 if 
 		
@@ -69,7 +69,7 @@ int main() {
       // Loop through the lights
       for(int i = 0; i < 256; i++) {
         // Check for each loop if the mode has changed, otherwise it is stuck
-        mode = IORD_ALTERA_AVALON_PIO_DATA(SYSTEM_MODES_BASE);
+        mode = IORD_ALTERA_AVALON_PIO_DATA(MODES_BASE);
         if(modes != 0x2) break;
 
         // Display in ascending order from counter of loop
@@ -95,7 +95,7 @@ int main() {
       // Loop through the lights
       while(1) {
         // Check mode while looping...
-      	modes = IORD_ALTERA_AVALON_PIO_DATA(SYSTEM_MODES_BASE);
+      	modes = IORD_ALTERA_AVALON_PIO_DATA(MODES_BASE);
         
         // break if mode changes
         if (modes != 0x3) break;
@@ -107,7 +107,7 @@ int main() {
         IOWR_ALTERA_AVALON_PIO_DATA(random_BASE, random);
 
         // Sleep so we can actually see the changes
-        usleep(10000);
+        usleep(100000);
       }  // Ending bracket while mode 3
     }  // Ending bracket if mode 3
 	}  // Ending bracket large while loop
