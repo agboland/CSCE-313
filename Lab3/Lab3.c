@@ -23,8 +23,21 @@ alt_u32 counter_BASE = 0x21000;
 // Random Pattern Base: 0x21010
 alt_u32 pattern_BASE = 0x21010;
 
+// Hex Display base addresses
+alt_u32 hex0_BASE = 0x0;
+alt_u32 hex1_BASE = 0x0;
+alt_u32 hex2_BASE = 0x0;
+alt_u32 hex3_BASE = 0x0;
+alt_u32 hex4_BASE = 0x0;
+
+// bcd_inputs
+alt_u32 bcdin_Base = 0x0;
+
+// Speed controller
+alt_u32 spcont_Base = 0x0;
+
 int main() {
-	alt_putstr("Project2 - CSCE 313\n");
+	alt_putstr("Project3 - CSCE 313\n");
 
 	// mode var alt_u8 0x0
 	alt_u8 mode = 0x0;
@@ -51,10 +64,22 @@ int main() {
 		if(mode == 0x1){
 			// output to board for checking purposes
 			alt_putstr("LEDs light on MODE 1\n");
+      
+      while(1) {
+        // Check mode while looping...
+      	mode = IORD_ALTERA_AVALON_PIO_DATA(MODES_BASE);
+        // break if mode changes
+        if (mode != 0x3) break;
 
-			// How to light pattern_BASE LEDs
-			IOWR_ALTERA_AVALON_PIO_DATA(pattern_BASE, 0xFFFFFFF);
-			IOWR_ALTERA_AVALON_PIO_DATA(counter_BASE, 0xFF);
+        // value to be displayed on HEX
+        disp = IORD_ALTERA_AVALON_PIO_DATA(bcdin_BASE);
+
+        // funct call to write to the display
+        IOWR_ALTERA_AVALON_PIO_DATA(hex4_BASE, disp); 
+        
+        // Sleep so we can actually see the changes
+        usleep(10000);
+      }  // Ending bracket while mode 3
 		}  // Ending bracket of mode 1 if
 
 		//********** MODE 2 **********
@@ -72,8 +97,14 @@ int main() {
         mode = IORD_ALTERA_AVALON_PIO_DATA(MODES_BASE);
         if(mode != 0x2) break;
 
-        // Display in ascending order from counter of loop
+        // Display on LEDS in ascending order from counter of loop
         IOWR_ALTERA_AVALON_PIO_DATA(counter_BASE, counter);
+
+        // Display of first val to HEX0 in ascending order from counter of loop
+        IOWR_ALTERA_AVALON_PIO_DATA(hex0_BASE, counter % 16);
+
+        // Display of second val to HEX1 in ...
+        IOWR_ALTERA_AVALON_PIO_DATA(hex1_BASE, counter / 16);
 
         // Count up on counter for next showing
         counter = counter + 0x1;
