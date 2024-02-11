@@ -36,6 +36,15 @@ alt_u32 bcdin_Base = 0x21010;
 // Speed controller
 alt_u32 spcont_Base = 0x21000;
 
+// funct to control speed 
+int spd(int num1){
+  if(num1==1){
+    return 300000;
+  } else {
+    return 125000;
+  }
+}
+
 int main() {
 	alt_putstr("Project3 - CSCE 313\n");
 
@@ -63,13 +72,13 @@ int main() {
 		// check if the mode is 1
 		if(mode == 0x1){
 			// output to board for checking purposes
-			alt_putstr("LEDs light on MODE 1\n");
+			alt_putstr("Decoder on MODE 1\n");
       
       while(1) {
         // Check mode while looping...
       	mode = IORD_ALTERA_AVALON_PIO_DATA(MODES_BASE);
         // break if mode changes
-        if (mode != 0x3) break;
+        if (mode != 0x1) break;
 
         // value to be displayed on HEX
         disp = IORD_ALTERA_AVALON_PIO_DATA(bcdin_BASE);
