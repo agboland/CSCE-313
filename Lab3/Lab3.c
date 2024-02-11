@@ -17,24 +17,24 @@
 #include <stdlib.h>
 
 // System Modes Base: 0x21020
-alt_u32 MODES_BASE = 0x21020;
+alt_u32 MODES_BASE = 0x21090;
 // System Counters Base: 0x21000
-alt_u32 counter_BASE = 0x21000;
+alt_u32 counter_BASE = 0x21070;
 // Random Pattern Base: 0x21010
-alt_u32 pattern_BASE = 0x21010;
+alt_u32 pattern_BASE = 0x21080;
 
 // Hex Display base addresses
-alt_u32 hex0_BASE = 0x0;
-alt_u32 hex1_BASE = 0x0;
-alt_u32 hex2_BASE = 0x0;
-alt_u32 hex3_BASE = 0x0;
-alt_u32 hex4_BASE = 0x0;
+alt_u32 hex0_BASE = 0x21060;
+alt_u32 hex1_BASE = 0x21050;
+alt_u32 hex2_BASE = 0x21040;
+alt_u32 hex3_BASE = 0x21030;
+alt_u32 hex4_BASE = 0x21020;
 
 // bcd_inputs
-alt_u32 bcdin_Base = 0x0;
+alt_u32 bcdin_Base = 0x21010;
 
 // Speed controller
-alt_u32 spcont_Base = 0x0;
+alt_u32 spcont_Base = 0x21000;
 
 int main() {
 	alt_putstr("Project3 - CSCE 313\n");
