@@ -25,7 +25,7 @@ int main()
 	my_pixel_buffer = alt_up_pixel_buffer_dma_open_dev("/dev/dma_buffer");
 
   // Check if the pixel array contains the image (go to no.7 of software requirements in the assignment sheet)
-	if(!my_pixel_buffer) printf("Error opening pixel buffer\n");
+	if(!my_pixel_buffer) alt_putstr("Error opening pixel buffer\n");
 
  // Clear the screen (go to no.8 of software requirements in the assignment sheet)
 	alt_up_pixel_buffer_dma_clear_screen(my_pixel_buffer,0);
@@ -45,11 +45,15 @@ int main()
     	//Clear the screen (go to no.8 of software requirements in the assignment sheet)
 		  alt_up_pixel_buffer_dma_clear_screen(my_pixel_buffer,0);
 		// display the image (go to no.9 of software requirements in the assignment sheet)
+		  for(int i=0; i<240; i++){
+		  for(int j=0; j<320; j++){
 		  alt_up_pixel_buffer_dma_draw(my_pixel_buffer,
 		  (myimage[(i*320*3+j*3+2)]) +
 		  (myimage[(i*320*3+j*3+1)]<<8) +
 		  (myimage[(i*320*3+j*3+0)]<<16),j,i);
-    }
+		  }
+		  }
+	}
 
 	// check the mode value. If mode is 1
 	  if(mode == 0x1) {
@@ -59,10 +63,13 @@ int main()
 
     	// Resize the image by 0.5 and display the image (go to no.10 of software requirements in the assignment sheet)
 		 double f = 0.5;
+		  for(int i=0; i<240; i++){
+		  for(int j=0; j<320; j++){
 		  alt_up_pixel_buffer_dma_draw(my_pixel_buffer,
 		  (myimage[(i*320*3+j*3+2)]) +
 		  (myimage[(i*320*3+j*3+1)]<<8) +
 		  (myimage[(i*320*3+j*3+0)]<<16),j*f,i*f);
+		  }}
 	  }
 
 
@@ -74,11 +81,14 @@ int main()
 
     	// Resize the image by 2 and display the image (go to no.10 of software requirements in the assignment sheet)
 			 double f = 2.0;
+			  for(int i=0; i<240; i++){
+			  for(int j=0; j<320; j++){
 			  alt_up_pixel_buffer_dma_draw(my_pixel_buffer,
 			  (myimage[(i*320*3+j*3+2)]) +
 			  (myimage[(i*320*3+j*3+1)]<<8) +
 			  (myimage[(i*320*3+j*3+0)]<<16),j*f,i*f);
-	  }
+			  }}
+			  }
 
    // check the mode value. If mode is 3.  print the message "Video message" on the console
 	  if(mode == 0x3) {
