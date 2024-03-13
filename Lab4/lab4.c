@@ -11,7 +11,7 @@
 // add the pixel buffer dma as shown in no.5 of the software requirements in the assignment sheet
 #include <altera_up_avalon_video_pixel_buffer_dma.h>
 
-alt_u32 MODES_BASE = 0x201000;
+alt_u32 MODES_BASE = 0x203000;
 
 int main()
 {
@@ -28,7 +28,7 @@ int main()
 	if(!my_pixel_buffer) alt_putstr("Error opening pixel buffer\n");
 
  // Clear the screen (go to no.8 of software requirements in the assignment sheet)
-	alt_up_pixel_buffer_dma_clear_screen(my_pixel_buffer,0);
+	  alt_up_pixel_buffer_dma_clear_screen(my_pixel_buffer,0);
 
 
 
@@ -41,9 +41,13 @@ int main()
 
  	// check the mode value. if mode is 0.
 	  if(mode == 0x0) {
+		  //Clear the screen (go to no.8 of software requirements in the assignment sheet)
+		  		  alt_up_pixel_buffer_dma_clear_screen(my_pixel_buffer,0);
+		  while(1){
 
-    	//Clear the screen (go to no.8 of software requirements in the assignment sheet)
-		  alt_up_pixel_buffer_dma_clear_screen(my_pixel_buffer,0);
+		  mode = IORD_ALTERA_AVALON_PIO_DATA(MODES_BASE);
+		  if (mode != 0x0) break;
+
 		// display the image (go to no.9 of software requirements in the assignment sheet)
 		  for(int i=0; i<240; i++){
 		  for(int j=0; j<320; j++){
@@ -53,13 +57,18 @@ int main()
 		  (myimage[(i*320*3+j*3+0)]<<16),j,i);
 		  }
 		  }
+		  }
 	}
 
 	// check the mode value. If mode is 1
 	  if(mode == 0x1) {
+		  //Clear the screen (go to no.8 of software requirements in the assignment sheet)
+		  		  alt_up_pixel_buffer_dma_clear_screen(my_pixel_buffer,0);
 
-		//Clear the screen (go to no.8 of software requirements in the assignment sheet)
-		  alt_up_pixel_buffer_dma_clear_screen(my_pixel_buffer,0);
+		  while(1){
+
+		  		  mode = IORD_ALTERA_AVALON_PIO_DATA(MODES_BASE);
+		  		  if (mode != 0x1) break;
 
     	// Resize the image by 0.5 and display the image (go to no.10 of software requirements in the assignment sheet)
 		 double f = 0.5;
@@ -70,14 +79,20 @@ int main()
 		  (myimage[(i*320*3+j*3+1)]<<8) +
 		  (myimage[(i*320*3+j*3+0)]<<16),j*f,i*f);
 		  }}
+		  }
 	  }
 
 
    // check the mode value. If mode is 2.
 	  if(mode == 0x2) {
 
-		//Clear the screen (go to no.8 of software requirements in the assignment sheet)
-		  alt_up_pixel_buffer_dma_clear_screen(my_pixel_buffer,0);
+		  //Clear the screen (go to no.8 of software requirements in the assignment sheet)
+		  		  		  alt_up_pixel_buffer_dma_clear_screen(my_pixel_buffer,0);
+
+		  		  while(1){
+
+		  		  		  mode = IORD_ALTERA_AVALON_PIO_DATA(MODES_BASE);
+		  		  		  if (mode != 0x2) break;
 
     	// Resize the image by 2 and display the image (go to no.10 of software requirements in the assignment sheet)
 			 double f = 2.0;
@@ -88,6 +103,7 @@ int main()
 			  (myimage[(i*320*3+j*3+1)]<<8) +
 			  (myimage[(i*320*3+j*3+0)]<<16),j*f,i*f);
 			  }}
+		  		  }
 			  }
 
    // check the mode value. If mode is 3.  print the message "Video message" on the console
